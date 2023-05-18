@@ -276,7 +276,7 @@ if __name__ == "__main__":
 
         train_dataset_sizes.append(len(train_datasets[i]))
         
-    log("train_datasets_sizes[{}] = {}".format(0, train_dataset_sizes[0]))    
+        log("train_datasets_sizes[{}] = {}".format(i, train_dataset_sizes[i]))    
             
     x = 'val'
     data_pairs_file = data_json_dir + "/val_data_pairs.json"
