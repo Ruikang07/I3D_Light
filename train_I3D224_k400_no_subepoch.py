@@ -43,7 +43,7 @@ save_path = "./model_i3d/"
 if not os.path.exists(save_path):
     os.mkdir(save_path)   
  
-def train_model(opt,save_path, model, criterion, optimizer, scheduler, \
+def train_model(opt,save_path, model, criterion, optimizer, \
             lr_i, lr_i_max, lr_list, num_epochs, start_epoch, start_sub_epoch, \
             train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_size):
        
@@ -130,7 +130,7 @@ def train_model(opt,save_path, model, criterion, optimizer, scheduler, \
                 epoch_acc = running_correct.double() / dataset_sizes[phase]                    
 
                 if phase == 'train':
-                    scheduler.step()
+                    #scheduler.step()
                     train_acc = epoch_acc
                     train_loss = epoch_loss
 
@@ -206,8 +206,6 @@ def main(train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_s
     Num_Classes=400
 
     DropoutProb = 0
-    step_size = 1000
-    gamma = 1
     
     lr_list = [1.0e-3, 1.0e-4, 1.0e-5]
     lr = lr_list[0]
@@ -238,9 +236,7 @@ def main(train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_s
         optimizer = optim.SGD(optim_paras, lr=lr, momentum=momentum, dampening=0, weight_decay=weight_decay) 
         log("sgd: lr={:e}, momentum={:.1f}, weight_decay={:e}".format(lr, momentum, weight_decay))
         opt='sgd_mm{:.1f}'.format(momentum)
-    
-    lr_scheduler1 = lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
-    
+       
     criterion = nn.CrossEntropyLoss() 
 
     start_epoch = 0
@@ -248,7 +244,7 @@ def main(train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_s
       
     optimizer.param_groups[0]['lr'] = lr          
  
-    train_model(opt,save_path, model, criterion, optimizer, lr_scheduler1, \
+    train_model(opt,save_path, model, criterion, optimizer, \
             lr_i, lr_i_max, lr_list, Num_Epochs, start_epoch, start_sub_epoch, \
             train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_size)   
 

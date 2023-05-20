@@ -43,7 +43,7 @@ save_path = "./model_i3d/"
 if not os.path.exists(save_path):
     os.mkdir(save_path)   
  
-def train_model(opt,save_path, model, criterion, optimizer, scheduler, \
+def train_model(opt,save_path, model, criterion, optimizer, \
             lr_i, lr_i_max, lr_list, num_epochs, start_epoch, start_sub_epoch, \
             train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_size):
        
@@ -130,7 +130,7 @@ def train_model(opt,save_path, model, criterion, optimizer, scheduler, \
                 epoch_acc = running_correct.double() / dataset_sizes[phase]                    
 
                 if phase == 'train':
-                    scheduler.step()
+                    #scheduler.step()
                     train_acc = epoch_acc
                     train_loss = epoch_loss
 
@@ -206,8 +206,6 @@ def main(train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_s
     Num_Classes=400
 
     DropoutProb = 0
-    step_size = 1000
-    gamma = 1
     
     lr_list = [0.008, 0.004, 0.002, 0.0008, 0.0004, 0.0002]
     lr = lr_list[0]
@@ -240,8 +238,6 @@ def main(train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_s
         log("sgd: lr={:e}, momentum={:.1f}, weight_decay={:e}".format(lr, momentum, weight_decay))
         opt='sgd_mm{:.1f}'.format(momentum)
     
-    lr_scheduler1 = lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
-    
     criterion = nn.CrossEntropyLoss() 
 
     start_epoch = 0
@@ -249,7 +245,7 @@ def main(train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_s
       
     optimizer.param_groups[0]['lr'] = lr          
  
-    train_model(opt,save_path, model, criterion, optimizer, lr_scheduler1, \
+    train_model(opt,save_path, model, criterion, optimizer, \
             lr_i, lr_i_max, lr_list, Num_Epochs, start_epoch, start_sub_epoch, \
             train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_size)   
 
@@ -266,7 +262,7 @@ if __name__ == "__main__":
     train_dataset_sizes = []
     if not os.path.exists(data_json_dir):
         os.makedirs(data_json_dir) 
-    data_pairs_file_root = data_json_dir + "/train_data_pairs"        
+    data_pairs_file_root = data_json_dir + "/train_data_pairs"      
     for i in range(num_sub_dataset):
         data_pairs_file = data_pairs_file_root+"_"+str(num_sub_dataset)+"_"+str(i+1)+".json"
         train_datasets.append(RGB_jpg_train_Dataset(data_pairs_file, data_dir/x, class_dicts,
@@ -277,7 +273,7 @@ if __name__ == "__main__":
 
         train_dataset_sizes.append(len(train_datasets[i]))
         
-        log("train_datasets_sizes[{}] = {}".format(i, train_dataset_sizes[i]))    
+        log("train_datasets_sizes[{}] = {}".format(i, train_dataset_sizes[i]))     
             
     x = 'val'
     data_pairs_file = data_json_dir + "/val_data_pairs.json"

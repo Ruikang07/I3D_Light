@@ -46,7 +46,7 @@ log("data_dir = {}".format(data_dir))
 log("data_json_dir = {}".format(data_json_dir)) 
 
 
-def train_model(opt,save_path, model1, model2, criterion, optimizer, scheduler, \
+def train_model(opt,save_path, model1, model2, criterion, optimizer, \
             lr_i, lr_i_max, lr_list, num_epochs, start_epoch, start_sub_epoch, \
             train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_size):
        
@@ -144,7 +144,7 @@ def train_model(opt,save_path, model1, model2, criterion, optimizer, scheduler, 
                 epoch_acc = running_correct.double() / dataset_sizes[phase]                    
 
                 if phase == 'train':
-                    scheduler.step()
+                    #scheduler.step()
                     train_acc = epoch_acc
                     train_loss = epoch_loss
 
@@ -225,8 +225,6 @@ def main(train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_s
     Num_Epochs = 100
     Num_Classes=400    
     DropoutProb = 0
-    step_size = 1000
-    gamma = 1
 
     lr_list = [0.001, 0.0001, 0.00001]
     for i,v in enumerate(lr_list):
@@ -270,16 +268,13 @@ def main(train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_s
         optimizer = optim.SGD(optim_paras, lr=lr, momentum=momentum, dampening=0, weight_decay=weight_decay) 
         log("sgd: lr={:e}, momentum={:.1f}, weight_decay={:e}".format(lr, momentum, weight_decay))
         opt='sgd'
-    
-    lr_scheduler1 = lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
-    log("lr_scheduler: step_size={}, gamma={}".format(step_size, gamma))
-    
+       
     criterion = nn.CrossEntropyLoss()          
     start_epoch = 0
     start_sub_epoch = 0          
     optimizer.param_groups[0]['lr'] = lr          
 
-    train_model(opt,save_path, model224, model112, criterion, optimizer, lr_scheduler1, \
+    train_model(opt,save_path, model224, model112, criterion, optimizer, \
             lr_i, lr_i_max, lr_list, Num_Epochs, start_epoch, start_sub_epoch, \
             train_data_loaders, val_data_loader, train_dataset_sizes, val_dataset_size)    
 
