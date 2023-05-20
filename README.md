@@ -94,3 +94,7 @@ dataset_in_imgs
 │
 └── json_file_dir
 ```
+<br><br>
+
+## lr scheduler
+For simplicity and flexibility, we a list of oredefined lr values as a lr scheduler.
