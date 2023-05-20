@@ -21,6 +21,22 @@ conda activate i3d_light
 pip install -r requirements.txt
 ```
 
+## Sub-epoch and Sub-dataset
+Since the dataset Kinetics400 is very big, each training epoch takes about a few hours. In order to check the effect of hyper-parameters optimization and avoid wasting too much time with wrong hyper-parameters, we use sub-epoch-based training instead of ordinary epoch-based training. The details of the sub-epoch runners are as follows.
+
+### Sub-epoch runner
+
+Step 1: Loading and preprocessing data. <br>
+1)	Load training dataset and validation dataset.<br>
+2)	Divide the whole training dataset into N (such as 10) subsets randomly with equal probability. Keep validation dataset undivided. <br>
+3)	Create N sub-data-loaders corresponding to the N sub-datasets for training and one data loader for validation dataset. <br><br>
+Step 2: Training. <br>
+1)	Divide one epoch into N sub-epochs. Each sub-epoch performs a training on the corresponding sub-dataset and a validation on the whole validation dataset. <br>
+2)	If the validation accuracy is not improved after a specified number of training epochs, the learning rate is updated based on a given schedule and model weights are set to the values which produced the best validation accuracy until that time point.<br><br>
+Step 3: Stop the training if epoch number reaches a specified value or early stop condition is satisfied. Otherwise go back to Step 2.<br>
+
+
+
 ## Dataset Folder Structure
 
 ```
