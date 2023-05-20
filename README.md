@@ -97,4 +97,4 @@ dataset_in_imgs
 <br><br>
 
 ## lr scheduler
-For simplicity and flexibility, we use a list of oredefined lr values as a lr scheduler.
+For simplicity and flexibility, we use a list of predefined lr values as a lr scheduler.
