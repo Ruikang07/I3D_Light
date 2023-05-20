@@ -35,7 +35,9 @@ Step 2: Training. <br>
 1)	Divide one epoch into N sub-epochs. Each sub-epoch performs a training on the corresponding sub-dataset and a validation on the whole validation dataset. <br>
 2)	If the validation accuracy is not improved after a specified number of training epochs, the learning rate is updated based on a given schedule and model weights are set to the values which produced the best validation accuracy until that time point.<br><br>
 
-Step 3: Stop the training if epoch number reaches a specified value or early stop condition is satisfied. Otherwise go back to Step 2.<br>
+Step 3: Stop the training if epoch number reaches a specified value or early stop condition is satisfied. Otherwise go back to Step 2.<br><br>
+
+In order to save the time of creating sub-datasets, the information of sub-datasets can be saved in json files.<br><br>
 
 
 
